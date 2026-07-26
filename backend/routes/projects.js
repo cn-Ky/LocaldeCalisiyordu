@@ -111,11 +111,15 @@ router.put('/:id', requireAuth, (req, res) => {
   if (Array.isArray(files)) {
     const del = db.prepare('DELETE FROM project_files WHERE project_id = ?');
     const insertFile = db.prepare('INSERT INTO project_files (project_id, filename, type, content, position) VALUES (?, ?, ?, ?, ?)');
-    const tx = db.transaction((fs) => {
+    try {
+      db.exec('BEGIN');
       del.run(project.id);
-      fs.forEach((f, i) => insertFile.run(project.id, f.filename, f.type, f.content || '', i));
-    });
-    tx(files);
+      files.forEach((f, i) => insertFile.run(project.id, f.filename, f.type, f.content || '', i));
+      db.exec('COMMIT');
+    } catch (e) {
+      db.exec('ROLLBACK');
+      throw e;
+    }
   }
 
   const updated = db.prepare('SELECT * FROM projects WHERE id = ?').get(project.id);

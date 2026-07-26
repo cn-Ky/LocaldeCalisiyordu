@@ -73,7 +73,8 @@ router.post('/:id/merge', requireAuth, (req, res) => {
   if (project.owner_id !== req.user.id) return res.status(403).json({ error: 'Sadece proje sahibi birleştirebilir.' });
 
   const proposed = getPrFiles(pr.id);
-  const tx = db.transaction(() => {
+  try {
+    db.exec('BEGIN');
     for (const f of proposed) {
       const existing = db.prepare('SELECT id FROM project_files WHERE project_id = ? AND filename = ?').get(project.id, f.filename);
       if (existing) {
@@ -86,8 +87,11 @@ router.post('/:id/merge', requireAuth, (req, res) => {
     }
     db.prepare('UPDATE projects SET updated_at = datetime(\'now\') WHERE id = ?').run(project.id);
     db.prepare('UPDATE pull_requests SET status = \'merged\', updated_at = datetime(\'now\') WHERE id = ?').run(pr.id);
-  });
-  tx();
+    db.exec('COMMIT');
+  } catch (e) {
+    db.exec('ROLLBACK');
+    throw e;
+  }
 
   const updated = db.prepare('SELECT * FROM pull_requests WHERE id = ?').get(pr.id);
   res.json({ pull: withAuthor(updated) });
