@@ -26,8 +26,8 @@ export default function Register() {
 
   return (
     <div className="desktop" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Window icon="📝" title="Hesap Oluştur — Localde Çalışıyordu" width="360px" statusLeft="Hazır">
-        <div className="brand-title" style={{ marginBottom: 14 }}>▦ Localde Çalışıyordu</div>
+      <Window icon={<i className="fa-solid fa-user-plus" />} title="Hesap Oluştur — Localde Çalışıyordu" width="360px" statusLeft="Hazır">
+        <div className="brand-title" style={{ marginBottom: 14 }}><i className="fa-solid fa-window-restore icon-inline" />Localde Çalışıyordu</div>
         {error && <div className="error-box">{error}</div>}
         <form onSubmit={submit}>
           <div className="field">

@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const APPS = [
-  { path: '/explore', label: 'Keşfet', icon: '🌐' },
-  { path: '/projects/new', label: 'Yeni Proje', icon: '📄' },
-  { path: '/my-projects', label: 'Projelerim', icon: '🗂️' },
+  { path: '/explore', label: 'Keşfet', icon: 'fa-solid fa-earth-americas' },
+  { path: '/projects/new', label: 'Yeni Proje', icon: 'fa-solid fa-file-circle-plus' },
+  { path: '/my-projects', label: 'Projelerim', icon: 'fa-solid fa-folder-open' },
 ];
 
 function useClock() {
@@ -37,13 +37,15 @@ export default function Shell({ children }) {
         <div className="start-menu bevel-raised" onClick={(e) => e.stopPropagation()}>
           <div className="start-menu-rail">LOCALDE ÇALIŞIYORDU</div>
           <div className="start-menu-items">
-            <div className="start-menu-item" onClick={() => go('/explore')}>🌐 Keşfet</div>
-            <div className="start-menu-item" onClick={() => go('/my-projects')}>🗂️ Projelerim</div>
-            <div className="start-menu-item" onClick={() => go('/projects/new')}>📄 Yeni Proje Oluştur</div>
+            <div className="start-menu-item" onClick={() => go('/explore')}><i className="fa-solid fa-earth-americas icon-inline" />Keşfet</div>
+            <div className="start-menu-item" onClick={() => go('/my-projects')}><i className="fa-solid fa-folder-open icon-inline" />Projelerim</div>
+            <div className="start-menu-item" onClick={() => go('/projects/new')}><i className="fa-solid fa-file-circle-plus icon-inline" />Yeni Proje Oluştur</div>
             <div className="start-menu-sep" />
-            <div className="start-menu-item" onClick={() => go('/explore')}>👤 {user?.username}</div>
+            <div className="start-menu-item" onClick={() => go('/explore')}><i className="fa-solid fa-user icon-inline" />{user?.username}</div>
             <div className="start-menu-sep" />
-            <div className="start-menu-item" onClick={() => { setMenuOpen(false); logout(); navigate('/login'); }}>🔒 Oturumu Kapat</div>
+            <div className="start-menu-item" onClick={() => { setMenuOpen(false); logout(); navigate('/login'); }}>
+              <i className="fa-solid fa-right-from-bracket icon-inline" />Oturumu Kapat
+            </div>
           </div>
         </div>
       )}
@@ -53,7 +55,7 @@ export default function Shell({ children }) {
           className={'start-btn' + (menuOpen ? ' open' : '')}
           onClick={(e) => { e.stopPropagation(); setMenuOpen((v) => !v); }}
         >
-          ▦ Başlat
+          <i className="fa-solid fa-grip icon-inline" />Başlat
         </div>
         <div className="taskbar-apps">
           {APPS.map((a) => (
@@ -62,11 +64,11 @@ export default function Shell({ children }) {
               className={'taskbar-app' + (location.pathname === a.path ? ' active' : '')}
               onClick={() => go(a.path)}
             >
-              {a.icon} {a.label}
+              <i className={a.icon + ' icon-inline'} />{a.label}
             </div>
           ))}
         </div>
-        <div className="taskbar-clock">🕒 {clock}</div>
+        <div className="taskbar-clock"><i className="fa-regular fa-clock icon-inline" />{clock}</div>
       </div>
     </div>
   );

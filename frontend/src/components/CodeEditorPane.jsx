@@ -2,7 +2,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
 import { javascript } from '@codemirror/lang-javascript';
-import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+import { win98CmTheme, win98CmExtras } from '../lib/codemirrorTheme.js';
 
 const LANGS = { html: html(), css: css(), js: javascript() };
 
@@ -12,7 +12,7 @@ export default function CodeEditorPane({ type, value, onChange, readOnly }) {
       <CodeMirror
         value={value}
         height="100%"
-        theme={vscodeDark}
+        theme={[win98CmTheme, win98CmExtras]}
         extensions={LANGS[type] ? [LANGS[type]] : []}
         onChange={onChange}
         editable={!readOnly}

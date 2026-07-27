@@ -30,11 +30,11 @@ export default function PullRequestNew() {
     }).catch((e) => setError(apiErrorMessage(e, 'Proje yüklenemedi.')));
   }, [id]);
 
-  if (error) return <Window icon="⚠️" title="Hata"><div className="error-box">{error}</div></Window>;
-  if (!fork) return <Window icon="⏳" title="Yükleniyor…"><p>Yükleniyor…</p></Window>;
+  if (error) return <Window icon={<i className="fa-solid fa-triangle-exclamation" />} title="Hata"><div className="error-box">{error}</div></Window>;
+  if (!fork) return <Window icon={<i className="fa-solid fa-hourglass-half" />} title="Yükleniyor…"><p>Yükleniyor…</p></Window>;
   if (!fork.parent_id) {
     return (
-      <Window icon="⚠️" title="Pull Request Gönderilemez">
+      <Window icon={<i className="fa-solid fa-triangle-exclamation" />} title="Pull Request Gönderilemez">
         <p>Bu proje bir fork değil. Pull request göndermek için önce hedef projeyi fork'lamalı ve değişikliklerini orada yapmalısın.</p>
         <Button98 onClick={() => navigate(-1)}>Geri Dön</Button98>
       </Window>
@@ -65,7 +65,10 @@ export default function PullRequestNew() {
   }
 
   return (
-    <Window icon="🔀" title={`Pull Request Oluştur → ${parent?.title || '...'}`} menu={['Dosya', 'Düzen', 'Görünüm']}>
+    <Window icon={<i className="fa-solid fa-code-pull-request" />} title={`Pull Request Oluştur → ${parent?.title || '...'}`} menu={[
+      { label: 'Dosya', items: [{ label: 'İptal', icon: 'fa-solid fa-xmark', onClick: () => navigate(-1) }] },
+      { label: 'Yardım', items: [{ label: 'Hakkında', icon: 'fa-solid fa-circle-info', onClick: () => window.alert("Fork'undaki dosyalarla üst projedeki dosyalar karşılaştırılır. Sadece farklı olan dosyalar pull request'e dahil edilir.") }] },
+    ]}>
       {error && <div className="error-box">{error}</div>}
       <div className="field">
         <label>Başlık</label>
@@ -88,7 +91,9 @@ export default function PullRequestNew() {
       ))}
 
       <div className="btn98-row" style={{ marginTop: 10 }}>
-        <Button98 variant="primary" onClick={submit} disabled={submitting}>{submitting ? 'Gönderiliyor…' : '🔀 Pull Request Gönder'}</Button98>
+        <Button98 variant="primary" onClick={submit} disabled={submitting}>
+          <i className="fa-solid fa-code-pull-request icon-inline" />{submitting ? 'Gönderiliyor…' : 'Pull Request Gönder'}
+        </Button98>
         <Button98 onClick={() => navigate(-1)}>İptal</Button98>
       </div>
     </Window>

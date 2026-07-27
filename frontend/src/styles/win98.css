@@ -34,7 +34,7 @@
   --warning-bg: #2a2210;
 
   --font-ui: Tahoma, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Silkscreen", Tahoma, sans-serif;
+  --font-display: Tahoma, "Segoe UI", sans-serif; /* Türkçe karakter uyumu için Silkscreen yerine UI fontu kullanılıyor */
   --font-mono: "Consolas", "SFMono-Regular", Menlo, Monaco, "Courier New", monospace;
 
   --bevel-w: 2px;
@@ -118,7 +118,8 @@ a { color: var(--accent); }
   opacity: 0.5;
 }
 .win98-titlebar-text {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
+  font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.5px;
   color: #fff;
@@ -333,7 +334,8 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
 .start-btn {
   display: flex; align-items: center; gap: 6px;
   padding: 5px 12px;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
+  font-weight: 700;
   font-size: 12px;
   color: var(--text-inverse);
   background: linear-gradient(180deg, var(--accent), var(--accent-dim));
@@ -389,7 +391,8 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
   transform: rotate(180deg);
   display: flex; align-items: flex-end; justify-content: center;
   padding: 10px 0;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
+  font-weight: 700;
   font-size: 13px;
   color: #fff;
   text-shadow: 0 0 8px rgba(255,46,136,0.7);
@@ -408,11 +411,11 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
 /* ---------- Editor layout ---------- */
 .editor-layout {
   display: grid;
-  grid-template-columns: 200px 1fr 1fr;
+  grid-template-columns: 230px 1fr 1fr;
   gap: 10px;
-  min-height: 480px;
+  min-height: 560px;
 }
-.editor-filetree { display: flex; flex-direction: column; gap: 6px; }
+.editor-filetree { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
 .filetree-item {
   display: flex; align-items: center; justify-content: space-between;
   padding: 6px 8px;
@@ -422,10 +425,10 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
 }
 .filetree-item.active { background: var(--accent); color: var(--text-inverse); }
 .editor-pane, .preview-pane { display: flex; flex-direction: column; min-height: 0; }
-.preview-frame-wrap { flex: 1; background: #fff; min-height: 300px; }
+.preview-frame-wrap { flex: 1; background: #fff; min-height: 380px; }
 .preview-frame-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
-.cm-editor-wrap { flex: 1; min-height: 300px; overflow: auto; }
-.cm-editor-wrap .cm-editor { height: 100%; font-family: var(--font-mono); font-size: 13px; }
+.cm-editor-wrap { flex: 1; min-height: 380px; overflow: auto; }
+.cm-editor-wrap .cm-editor { height: 100%; }
 
 /* ---------- Diff view ---------- */
 .diff-file { margin-bottom: 16px; }
@@ -443,7 +446,76 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
 .diff-line.context { color: var(--text-dim); }
 
 /* ---------- Misc ---------- */
+.win98-menubar { position: relative; }
+.menubar-item { position: relative; }
+.menu-dropdown {
+  position: absolute;
+  top: 100%; left: 0;
+  min-width: 170px;
+  background: var(--win-bg);
+  z-index: 60;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+  border-top: 1px solid var(--win-border-lighter);
+  border-left: 1px solid var(--win-border-lighter);
+  border-right: 1px solid var(--win-border-darker);
+  border-bottom: 1px solid var(--win-border-darker);
+}
+.menu-dropdown-item {
+  padding: 7px 12px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  display: flex; align-items: center; gap: 9px;
+  white-space: nowrap;
+}
+.menu-dropdown-item:hover { background: var(--accent); color: var(--text-inverse); }
+.menu-dropdown-item.disabled { color: var(--text-faint); cursor: not-allowed; }
+.menu-dropdown-item.disabled:hover { background: none; color: var(--text-faint); }
+.menu-dropdown-sep { height: 1px; background: var(--win-border-darker); border-bottom: 1px solid var(--win-border-lighter); margin: 3px 0; }
+
+/* ---------- Visibility segmented control ---------- */
+.visibility-toggle { display: flex; margin-bottom: 4px; }
+.visibility-btn {
+  flex: 1;
+  padding: 7px 4px;
+  font-size: 11px;
+  text-align: center;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: var(--win-bg-alt);
+  color: var(--text-dim);
+  border-top: 1px solid var(--win-border-darker);
+  border-left: 1px solid var(--win-border-darker);
+  border-right: 1px solid var(--win-border-lighter);
+  border-bottom: 1px solid var(--win-border-lighter);
+}
+.visibility-btn.active.public { background: var(--success-bg); color: var(--success); box-shadow: inset 0 0 0 1px var(--success); }
+.visibility-btn.active.private { background: var(--danger-bg); color: var(--danger); box-shadow: inset 0 0 0 1px var(--danger); }
+
+/* ---------- Library quick-add grid ---------- */
+.lib-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 8px; }
+.lib-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 2px;
+  font-size: 10px;
+  text-align: center;
+  background: var(--win-bg-alt);
+  color: var(--text);
+  cursor: pointer;
+  border-top: 1px solid var(--win-border-lighter);
+  border-left: 1px solid var(--win-border-lighter);
+  border-right: 1px solid var(--win-border-darker);
+  border-bottom: 1px solid var(--win-border-darker);
+}
+.lib-btn:hover { background: rgba(0,230,255,0.1); color: var(--accent); }
+.lib-btn i { font-size: 16px; }
+.lib-btn.added { opacity: 0.4; cursor: default; }
+.custom-lib-row { display: flex; flex-direction: column; gap: 4px; }
+.custom-lib-row .input98 { width: 100%; }
+
 .hint { color: var(--text-dim); font-size: 12px; }
+.icon-inline { margin-right: 7px; }
+.glyph i, .win98-titlebar-icon i { line-height: 1; }
 .error-box {
   color: var(--danger);
   background: var(--danger-bg);
@@ -456,13 +528,15 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
 .empty-state .glyph { font-size: 34px; margin-bottom: 10px; filter: drop-shadow(0 0 8px var(--accent)); }
 
 .brand-title {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
+  font-weight: 700;
   font-size: 18px;
   color: var(--accent);
   text-shadow: 0 0 10px rgba(0,230,255,0.6);
 }
 .section-title {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
+  font-weight: 700;
   font-size: 13px;
   color: var(--text);
   margin: 0 0 10px;
