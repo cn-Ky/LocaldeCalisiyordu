@@ -87,7 +87,7 @@ export default function ProjectView() {
   return (
     <Window
       icon={<i className={project.visibility === 'private' ? 'fa-solid fa-lock' : 'fa-solid fa-folder-open'} />}
-      title={`${project.title} — @${project.owner?.username}`}
+      title={<>{project.title} — <span className="user-link" onClick={() => navigate(`/u/${project.owner?.username}`)}>@{project.owner?.username}</span></>}
       menu={menu}
       statusLeft={project.visibility === 'private' ? 'Private' : 'Public'}
       statusRight={<><i className="fa-solid fa-star icon-inline" style={{ color: 'var(--warning)' }} />{project.stars}</>}

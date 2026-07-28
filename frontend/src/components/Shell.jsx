@@ -6,6 +6,7 @@ const APPS = [
   { path: '/explore', label: 'Keşfet', icon: 'fa-solid fa-earth-americas' },
   { path: '/projects/new', label: 'Yeni Proje', icon: 'fa-solid fa-file-circle-plus' },
   { path: '/my-projects', label: 'Projelerim', icon: 'fa-solid fa-folder-open' },
+  { path: '/messages', label: 'Mesajlar', icon: 'fa-solid fa-envelope' },
 ];
 
 function useClock() {
@@ -40,8 +41,9 @@ export default function Shell({ children }) {
             <div className="start-menu-item" onClick={() => go('/explore')}><i className="fa-solid fa-earth-americas icon-inline" />Keşfet</div>
             <div className="start-menu-item" onClick={() => go('/my-projects')}><i className="fa-solid fa-folder-open icon-inline" />Projelerim</div>
             <div className="start-menu-item" onClick={() => go('/projects/new')}><i className="fa-solid fa-file-circle-plus icon-inline" />Yeni Proje Oluştur</div>
+            <div className="start-menu-item" onClick={() => go('/messages')}><i className="fa-solid fa-envelope icon-inline" />Mesajlar</div>
             <div className="start-menu-sep" />
-            <div className="start-menu-item" onClick={() => go('/explore')}><i className="fa-solid fa-user icon-inline" />{user?.username}</div>
+            <div className="start-menu-item" onClick={() => go(`/u/${user?.username}`)}><i className="fa-solid fa-user icon-inline" />{user?.username}</div>
             <div className="start-menu-sep" />
             <div className="start-menu-item" onClick={() => { setMenuOpen(false); logout(); navigate('/login'); }}>
               <i className="fa-solid fa-right-from-bracket icon-inline" />Oturumu Kapat
@@ -67,6 +69,12 @@ export default function Shell({ children }) {
               <i className={a.icon + ' icon-inline'} />{a.label}
             </div>
           ))}
+          <div
+            className={'taskbar-app' + (location.pathname === `/u/${user?.username}` ? ' active' : '')}
+            onClick={() => go(`/u/${user?.username}`)}
+          >
+            <i className="fa-solid fa-id-card icon-inline" />Profilim
+          </div>
         </div>
         <div className="taskbar-clock"><i className="fa-regular fa-clock icon-inline" />{clock}</div>
       </div>

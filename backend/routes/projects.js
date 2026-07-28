@@ -44,13 +44,21 @@ function canView(project, userId) {
 
 // Listeleme: herkese açık projeler + (istek atan kişi için) kendi private projeleri
 router.get('/', optionalAuth, (req, res) => {
-  const { mine, search, owner } = req.query;
+  const { mine, search, owner, feed } = req.query;
   const uid = req.user ? req.user.id : null;
 
   let rows;
   if (mine === 'true') {
     if (!uid) return res.status(401).json({ error: 'Oturum açmanız gerekiyor.' });
     rows = db.prepare('SELECT * FROM projects WHERE owner_id = ? ORDER BY updated_at DESC').all(uid);
+  } else if (feed === 'following') {
+    if (!uid) return res.status(401).json({ error: 'Oturum açmanız gerekiyor.' });
+    rows = db.prepare(`
+      SELECT p.* FROM projects p
+      JOIN follows f ON f.followee_id = p.owner_id
+      WHERE f.follower_id = ? AND p.visibility = 'public'
+      ORDER BY p.updated_at DESC LIMIT 100
+    `).all(uid);
   } else if (owner) {
     const ownerUser = db.prepare('SELECT id FROM users WHERE username = ?').get(owner);
     if (!ownerUser) return res.json({ projects: [] });

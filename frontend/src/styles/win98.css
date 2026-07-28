@@ -513,6 +513,48 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
 .custom-lib-row { display: flex; flex-direction: column; gap: 4px; }
 .custom-lib-row .input98 { width: 100%; }
 
+/* ---------- Avatar ---------- */
+.avatar-circle {
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+  border: 2px solid;
+  box-shadow: 0 0 12px rgba(0,230,255,0.15);
+}
+.user-link { cursor: pointer; color: var(--accent); }
+.user-link:hover { text-decoration: underline; }
+
+/* ---------- Profile page ---------- */
+.profile-header { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; }
+.profile-meta { flex: 1; min-width: 200px; }
+.profile-username { font-size: 18px; font-weight: 700; color: var(--text); }
+.profile-stats { display: flex; gap: 18px; margin: 8px 0; font-size: 12px; color: var(--text-dim); }
+.profile-stats strong { color: var(--accent); }
+.profile-bio { font-size: 13px; color: var(--text-dim); max-width: 480px; }
+.profile-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ---------- Messages layout ---------- */
+.messages-layout { display: grid; grid-template-columns: 240px 1fr; gap: 10px; min-height: 460px; }
+.conv-list { display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+.conv-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px;
+  cursor: pointer;
+  background: var(--win-bg-alt);
+}
+.conv-item.active { box-shadow: inset 0 0 0 1px var(--accent); background: rgba(0,230,255,0.08); }
+.conv-item .conv-name { font-size: 12px; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv-item .conv-preview { font-size: 10px; color: var(--text-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv-item .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 6px var(--accent-2); flex-shrink: 0; }
+.thread-pane { display: flex; flex-direction: column; min-height: 0; }
+.thread-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 4px; }
+.msg-bubble { max-width: 70%; padding: 7px 10px; font-size: 13px; }
+.msg-bubble.mine { align-self: flex-end; background: rgba(0,230,255,0.12); box-shadow: inset 0 0 0 1px var(--accent); }
+.msg-bubble.theirs { align-self: flex-start; background: var(--win-bg-alt); box-shadow: inset 0 0 0 1px var(--win-border-lighter); }
+.msg-bubble .msg-time { display: block; font-size: 10px; color: var(--text-faint); margin-top: 3px; }
+.thread-compose { display: flex; gap: 6px; margin-top: 8px; }
+
 .hint { color: var(--text-dim); font-size: 12px; }
 .icon-inline { margin-right: 7px; }
 .glyph i, .win98-titlebar-icon i { line-height: 1; }

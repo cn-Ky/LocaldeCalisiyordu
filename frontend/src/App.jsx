@@ -11,6 +11,8 @@ import ProjectView from './pages/ProjectView.jsx';
 import PullRequestList from './pages/PullRequestList.jsx';
 import PullRequestNew from './pages/PullRequestNew.jsx';
 import PullRequestDetail from './pages/PullRequestDetail.jsx';
+import Profile from './pages/Profile.jsx';
+import Messages from './pages/Messages.jsx';
 
 function Authed({ children }) {
   return (
@@ -42,6 +44,9 @@ export default function App() {
       <Route path="/projects/:id/pulls" element={<Authed><PullRequestList /></Authed>} />
       <Route path="/projects/:id/pulls/new" element={<Authed><PullRequestNew /></Authed>} />
       <Route path="/pulls/:id" element={<Authed><PullRequestDetail /></Authed>} />
+      <Route path="/u/:username" element={<Authed><Profile /></Authed>} />
+      <Route path="/messages" element={<Authed><Messages /></Authed>} />
+      <Route path="/messages/:username" element={<Authed><Messages /></Authed>} />
       <Route path="*" element={<Navigate to="/explore" replace />} />
     </Routes>
   );
