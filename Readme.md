@@ -41,8 +41,4 @@ Localde Çalışıyordu, Codepen altarnetifi kod editörü içeren HTML CSS JS v
 <a href="https://github.com/CanKayabas">
   <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_11.png" alt="Picture" width="100%" height="100%">
 </a>
-
-<a href="https://github.com/CanKayabas">
-  <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_12.png" alt="Picture" width="100%" height="100%">
-</a>
 </div> 
