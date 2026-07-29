@@ -58,4 +58,43 @@ export const win98CmExtras = EditorView.theme({
   '&:not(.cm-focused) .cm-selectionBackground': {
     backgroundColor: 'rgba(0, 230, 255, 0.28) !important',
   },
+  // Emmet abbreviation'ı yazılırken altı çiziliyor (örn. "div.card>ul>li*3")
+  '.emmet-tracker': {
+    textDecoration: 'underline dotted',
+    textUnderlineOffset: '3px',
+    textDecorationColor: 'var(--accent, #00e6ff)',
+  },
+  // Tab ile genişletilecek Emmet çıktısının canlı önizlemesi (küçük kod kutusu)
+  '.cm-tooltip .emmet-preview': {
+    background: '#121320',
+    border: '1px solid #454863',
+    boxShadow: '2px 2px 0 rgba(0,0,0,0.6), 0 0 10px rgba(0,230,255,0.15)',
+    padding: '4px 6px',
+    fontFamily: 'Consolas, "SFMono-Regular", Menlo, Monaco, "Courier New", monospace',
+    fontSize: '12.5px',
+    maxWidth: '360px',
+    overflow: 'auto',
+  },
+  '.cm-tooltip .emmet-preview_error': {
+    color: '#ff5c5c',
+    border: '1px solid #ff5c5c',
+  },
+  '.cm-tooltip.cm-tooltip-autocomplete': {
+    background: '#121320',
+    border: '1px solid #454863',
+    boxShadow: '2px 2px 0 rgba(0,0,0,0.6)',
+  },
+  '.cm-tooltip.cm-tooltip-autocomplete > ul': {
+    fontFamily: 'Consolas, "SFMono-Regular", Menlo, Monaco, "Courier New", monospace',
+    fontSize: '12.5px',
+  },
+  '.cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected]': {
+    background: 'var(--accent, #00e6ff)',
+    color: 'var(--text-inverse, #05060b)',
+  },
+  // Emmet tamamlamaları için ikon (varsayılan tip haritasında "emmet" karşılığı yok)
+  '.cm-completionIcon-emmet:after': {
+    content: '"⚡"',
+    color: '#ffcf4d',
+  },
 });

@@ -629,11 +629,15 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
 .spacer { flex: 1; }
 
 @media (max-width: 860px) {
-  .editor-layout { grid-template-columns: 1fr; }
+  .editor-layout { grid-template-columns: 1fr; min-height: unset; }
   .editor-settings-layout { grid-template-columns: 1fr; }
-  .workspace-layout { grid-template-columns: 1fr; }
+  .workspace-layout { grid-template-columns: 1fr; min-height: unset; }
   .workspace-sidebar { flex-direction: row; overflow-x: auto; overflow-y: hidden; }
   .workspace-file-tab { flex-shrink: 0; }
+  .workspace-main .cm-editor-wrap,
+  .workspace-main .preview-frame-wrap,
+  .cm-editor-wrap,
+  .preview-frame-wrap { min-height: 62vh; }
   .messages-layout { grid-template-columns: 1fr; min-height: unset; }
   .conv-list { max-height: 160px; }
   .thread-messages { max-height: 50vh; }
@@ -657,6 +661,19 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
   .profile-actions { justify-content: center; }
   .btn98 { padding: 6px 10px; }
   .start-menu { width: 88vw; left: 3vw; }
+  /* Kod editörü araç çubuğu: dar ekranda butonlar tam genişlik kaplayıp alt alta dizilsin */
+  .toolbar { gap: 6px; }
+  .toolbar .btn98 { flex: 1 1 auto; justify-content: center; white-space: nowrap; }
+  .toolbar input.input98 { flex-basis: 100%; }
+  .workspace-bottombar { gap: 6px; }
+  .workspace-bottombar .workspace-toggle-btn { flex: 1 1 auto; justify-content: center; padding: 8px 10px; }
+  .workspace-bottombar .hint { flex-basis: 100%; text-align: center; }
+  .workspace-main .cm-editor-wrap,
+  .workspace-main .preview-frame-wrap,
+  .cm-editor-wrap,
+  .preview-frame-wrap { min-height: 54vh; }
+  .cm-editor-wrap .cm-content, .cm-editor-wrap .cm-gutters { font-size: 13px; }
+  .lib-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 420px) {
@@ -664,4 +681,8 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
   .icon-grid { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); }
   .taskbar-app i { margin-right: 0; }
   .taskbar-label { display: none; }
+  .workspace-main .cm-editor-wrap,
+  .workspace-main .preview-frame-wrap,
+  .cm-editor-wrap,
+  .preview-frame-wrap { min-height: 48vh; }
 }
