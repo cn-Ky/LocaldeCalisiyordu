@@ -4,8 +4,6 @@ import api, { apiErrorMessage } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import Window from '../components/Window.jsx';
 import Button98 from '../components/Button98.jsx';
-import CodeEditorPane from '../components/CodeEditorPane.jsx';
-import PreviewFrame from '../components/PreviewFrame.jsx';
 import InfoDialog from '../components/InfoDialog.jsx';
 
 function fileIcon(type) {
@@ -20,11 +18,9 @@ export default function ProjectView() {
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [files, setFiles] = useState([]);
-  const [activeIdx, setActiveIdx] = useState(0);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
-  const [previewKey, setPreviewKey] = useState(0);
 
   function load() {
     api.get(`/projects/${id}`)
@@ -39,7 +35,6 @@ export default function ProjectView() {
 
   const isOwner = user && user.id === project.owner_id;
   const codeFiles = files.filter((f) => f.type !== 'lib');
-  const active = codeFiles[activeIdx] || codeFiles[0];
 
   async function fork() {
     setBusy(true);
@@ -71,12 +66,6 @@ export default function ProjectView() {
       ],
     },
     {
-      label: 'Görünüm',
-      items: [
-        { label: 'Önizlemeyi Yenile', icon: 'fa-solid fa-rotate', onClick: () => setPreviewKey((k) => k + 1) },
-      ],
-    },
-    {
       label: 'Yardım',
       items: [
         { label: 'Hakkında', icon: 'fa-solid fa-circle-info', onClick: () => setShowHelp(true) },
@@ -93,8 +82,8 @@ export default function ProjectView() {
       statusRight={<><i className="fa-solid fa-star icon-inline" style={{ color: 'var(--warning)' }} />{project.stars}</>}
     >
       {showHelp && (
-        <InfoDialog title="Proje Görünümü Hakkında" onClose={() => setShowHelp(false)}>
-          <p>Bu proje salt okunur görüntüleniyor. Sahibi değilsen fork'layıp kendi kopyanda düzenleyebilir, sonra üst projeye pull request gönderebilirsin.</p>
+        <InfoDialog title="Proje Hakkında" onClose={() => setShowHelp(false)}>
+          <p>Kodu incelemek ve canlı önizlemeyi görmek için "Kodu ve Önizlemeyi Görüntüle" butonuna tıkla — geniş ekranlı, ayrı bir sayfada açılır. Sahibi değilsen fork'layıp kendi kopyanda düzenleyebilir, sonra üst projeye pull request gönderebilirsin.</p>
         </InfoDialog>
       )}
       {error && <div className="error-box">{error}</div>}
@@ -124,22 +113,22 @@ export default function ProjectView() {
         )}
       </div>
 
-      <div className="editor-layout">
+      <div className="editor-settings-layout">
         <div className="editor-filetree">
           <div className="section-title">DOSYALAR</div>
-          {codeFiles.map((f, i) => (
-            <div key={f.filename} className={'filetree-item' + (active === f ? ' active' : '')} onClick={() => setActiveIdx(i)}>
+          {codeFiles.map((f) => (
+            <div key={f.filename} className="filetree-item">
               <span><i className={fileIcon(f.type) + ' icon-inline'} />{f.filename}</span>
             </div>
           ))}
         </div>
-        <div className="editor-pane">
-          <div className="section-title">{active?.filename}</div>
-          {active && <CodeEditorPane type={active.type} value={active.content} readOnly />}
-        </div>
-        <div className="preview-pane">
-          <div className="section-title">CANLI ÖNİZLEME</div>
-          <PreviewFrame files={files} refreshKey={previewKey} />
+
+        <div className="workspace-cta bevel-sunken">
+          <div className="glyph"><i className="fa-solid fa-laptop-code" /></div>
+          <p>Kodu incelemek ve canlı önizlemeyi görmek için geniş ekranlı görünümü aç.</p>
+          <Button98 variant="primary" onClick={() => navigate(`/projects/${id}/workspace`)}>
+            <i className="fa-solid fa-laptop-code icon-inline" />Kodu ve Önizlemeyi Görüntüle
+          </Button98>
         </div>
       </div>
     </Window>

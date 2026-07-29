@@ -9,6 +9,7 @@ import MyProjects from './pages/MyProjects.jsx';
 import Editor from './pages/Editor.jsx';
 import EditorWorkspace from './pages/EditorWorkspace.jsx';
 import ProjectView from './pages/ProjectView.jsx';
+import ProjectWorkspaceView from './pages/ProjectWorkspaceView.jsx';
 import PullRequestList from './pages/PullRequestList.jsx';
 import PullRequestNew from './pages/PullRequestNew.jsx';
 import PullRequestDetail from './pages/PullRequestDetail.jsx';
@@ -43,6 +44,7 @@ export default function App() {
       <Route path="/projects/:id/edit" element={<Authed><Editor /></Authed>} />
       <Route path="/projects/:id/edit/workspace" element={<Authed wide><EditorWorkspace /></Authed>} />
       <Route path="/projects/:id" element={<Authed><ProjectView /></Authed>} />
+      <Route path="/projects/:id/workspace" element={<Authed wide><ProjectWorkspaceView /></Authed>} />
       <Route path="/projects/:id/pulls" element={<Authed><PullRequestList /></Authed>} />
       <Route path="/projects/:id/pulls/new" element={<Authed><PullRequestNew /></Authed>} />
       <Route path="/pulls/:id" element={<Authed><PullRequestDetail /></Authed>} />
