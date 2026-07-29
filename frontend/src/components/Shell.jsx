@@ -66,14 +66,14 @@ export default function Shell({ children, wide }) {
               className={'taskbar-app' + (location.pathname === a.path ? ' active' : '')}
               onClick={() => go(a.path)}
             >
-              <i className={a.icon + ' icon-inline'} />{a.label}
+              <i className={a.icon + ' icon-inline'} /><span className="taskbar-label">{a.label}</span>
             </div>
           ))}
           <div
             className={'taskbar-app' + (location.pathname === `/u/${user?.username}` ? ' active' : '')}
             onClick={() => go(`/u/${user?.username}`)}
           >
-            <i className="fa-solid fa-id-card icon-inline" />Profilim
+            <i className="fa-solid fa-id-card icon-inline" /><span className="taskbar-label">Profilim</span>
           </div>
         </div>
         <div className="taskbar-clock"><i className="fa-regular fa-clock icon-inline" />{clock}</div>

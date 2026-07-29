@@ -13,7 +13,7 @@ export default function Window({ icon, title, menu, statusLeft, statusRight, chi
   }, []);
 
   return (
-    <div className="win98-window bevel-raised" style={width ? { width } : undefined}>
+    <div className="win98-window bevel-raised" style={width ? { width, maxWidth: '94vw' } : undefined}>
       <div className="win98-titlebar">
         <div className="win98-titlebar-text">
           {icon && <span className="win98-titlebar-icon">{icon}</span>}

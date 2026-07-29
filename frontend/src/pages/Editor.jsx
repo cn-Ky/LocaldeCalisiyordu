@@ -190,8 +190,8 @@ export default function Editor() {
       {notice && <div className="hint" style={{ marginBottom: 10 }}><i className="fa-solid fa-circle-check icon-inline" style={{ color: 'var(--success)' }} />{notice}</div>}
 
       <div className="toolbar">
-        <input className="input98" style={{ width: 220 }} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Proje başlığı" />
-        <input className="input98" style={{ flex: 1, minWidth: 160 }} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Kısa açıklama" />
+        <input className="input98" style={{ width: 220, maxWidth: '100%' }} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Proje başlığı" />
+        <input className="input98" style={{ flex: 1, minWidth: 160, maxWidth: '100%' }} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Kısa açıklama" />
         <Button98 variant="primary" onClick={save} disabled={saving}><i className="fa-solid fa-floppy-disk icon-inline" />Kaydet</Button98>
         {isEdit && parentId && (
           <Button98 onClick={() => navigate(`/projects/${id}/pulls/new`)}>
@@ -203,7 +203,7 @@ export default function Editor() {
         )}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: 16 }}>
+      <div className="editor-settings-layout">
         <div className="editor-filetree">
           <div className="section-title">GÖRÜNÜRLÜK</div>
           <div className="visibility-toggle">
