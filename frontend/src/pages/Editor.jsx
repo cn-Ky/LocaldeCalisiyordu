@@ -4,8 +4,6 @@ import api, { apiErrorMessage } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import Window from '../components/Window.jsx';
 import Button98 from '../components/Button98.jsx';
-import CodeEditorPane from '../components/CodeEditorPane.jsx';
-import PreviewFrame from '../components/PreviewFrame.jsx';
 import InfoDialog from '../components/InfoDialog.jsx';
 import { POPULAR_LIBS } from '../lib/popularLibs.js';
 
@@ -40,14 +38,11 @@ export default function Editor() {
   const [description, setDescription] = useState('');
   const [visibility, setVisibility] = useState('public');
   const [files, setFiles] = useState(DEFAULT_FILES);
-  const [activeIdx, setActiveIdx] = useState(0);
   const [libUrl, setLibUrl] = useState('');
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
-  const [previewFiles, setPreviewFiles] = useState(DEFAULT_FILES);
-  const [previewKey, setPreviewKey] = useState(0);
   const [ownerId, setOwnerId] = useState(null);
   const [parentId, setParentId] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
@@ -62,16 +57,10 @@ export default function Editor() {
         setOwnerId(res.data.project.owner_id);
         setParentId(res.data.project.parent_id);
         setFiles(res.data.files);
-        setPreviewFiles(res.data.files);
       })
       .catch((e) => setError(apiErrorMessage(e, 'Proje yüklenemedi.')))
       .finally(() => setLoading(false));
   }, [id, isEdit]);
-
-  useEffect(() => {
-    const t = setTimeout(() => setPreviewFiles(files), 400);
-    return () => clearTimeout(t);
-  }, [files]);
 
   if (isEdit && ownerId && user && ownerId !== user.id) {
     navigate(`/projects/${id}`);
@@ -80,11 +69,6 @@ export default function Editor() {
 
   const codeFiles = files.filter((f) => f.type !== 'lib');
   const libFiles = files.filter((f) => f.type === 'lib');
-  const active = codeFiles[activeIdx] || codeFiles[0];
-
-  function updateActiveContent(content) {
-    setFiles((prev) => prev.map((f) => (f === active ? { ...f, content } : f)));
-  }
 
   function addFile() {
     const name = window.prompt('Dosya adı (örn: about.html, theme.css, app.js):');
@@ -93,13 +77,12 @@ export default function Editor() {
     if (!type) { setError('Sadece .html, .css ve .js dosyaları desteklenir.'); return; }
     if (files.some((f) => f.filename === name)) { setError('Bu isimde bir dosya zaten var.'); return; }
     setFiles((prev) => [...prev, { filename: name, type, content: '' }]);
-    setActiveIdx(codeFiles.length);
   }
 
   function removeFile(filename) {
     if (files.filter((f) => f.type !== 'lib').length <= 1) return;
+    if (!window.confirm(`"${filename}" silinsin mi?`)) return;
     setFiles((prev) => prev.filter((f) => f.filename !== filename));
-    setActiveIdx(0);
   }
 
   function addLibByUrl(url) {
@@ -176,13 +159,6 @@ export default function Editor() {
       label: 'Düzen',
       items: [
         { label: 'Yeni Dosya Ekle', icon: 'fa-solid fa-file-circle-plus', onClick: addFile },
-        { label: 'Aktif Dosyayı Sil', icon: 'fa-solid fa-trash', disabled: codeFiles.length <= 1, onClick: () => active && removeFile(active.filename) },
-      ],
-    },
-    {
-      label: 'Görünüm',
-      items: [
-        { label: 'Önizlemeyi Yenile', icon: 'fa-solid fa-rotate', onClick: () => setPreviewKey((k) => k + 1) },
       ],
     },
     {
@@ -199,15 +175,15 @@ export default function Editor() {
 
   return (
     <Window
-      icon={<i className="fa-solid fa-screwdriver-wrench" />}
+      icon={<i className="fa-solid fa-gear" />}
       title={`${isEdit ? 'Düzenle' : 'Yeni Proje'}: ${title} — Localde Çalışıyordu`}
       menu={menu}
       statusLeft={visibility === 'public' ? 'Public' : 'Private'}
       statusRight={saving ? 'Kaydediliyor…' : 'Hazır'}
     >
       {showHelp && (
-        <InfoDialog title="Editör Hakkında" onClose={() => setShowHelp(false)}>
-          <p>Sol panelden dosya ekleyip düzenleyebilir, kütüphane ekleyebilir, görünürlüğü seçebilirsin. Orta panel kod editörü, sağ panel canlı önizlemedir. Değişiklikler yaklaşık 400ms sonra önizlemeye otomatik yansır.</p>
+        <InfoDialog title="Proje Ayarları Hakkında" onClose={() => setShowHelp(false)}>
+          <p>Burada proje bilgilerini, görünürlüğü ve dosya listesini yönetirsin. Asıl kodu yazmak için "Kod Editörünü Aç" butonuna tıkla — geniş ekranlı, ayrı bir çalışma sayfası açılır.</p>
         </InfoDialog>
       )}
       {error && <div className="error-box">{error}</div>}
@@ -227,30 +203,24 @@ export default function Editor() {
         )}
       </div>
 
-      <div className="editor-layout">
+      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: 16 }}>
         <div className="editor-filetree">
           <div className="section-title">GÖRÜNÜRLÜK</div>
           <div className="visibility-toggle">
-            <div
-              className={'visibility-btn' + (visibility === 'public' ? ' active public' : '')}
-              onClick={() => setVisibility('public')}
-            >
+            <div className={'visibility-btn' + (visibility === 'public' ? ' active public' : '')} onClick={() => setVisibility('public')}>
               <i className="fa-solid fa-earth-americas" /> Public
             </div>
-            <div
-              className={'visibility-btn' + (visibility === 'private' ? ' active private' : '')}
-              onClick={() => setVisibility('private')}
-            >
+            <div className={'visibility-btn' + (visibility === 'private' ? ' active private' : '')} onClick={() => setVisibility('private')}>
               <i className="fa-solid fa-lock" /> Private
             </div>
           </div>
 
           <div className="section-title" style={{ marginTop: 10 }}>DOSYALAR</div>
-          {codeFiles.map((f, i) => (
-            <div key={f.filename} className={'filetree-item' + (active === f ? ' active' : '')} onClick={() => setActiveIdx(i)}>
+          {codeFiles.map((f) => (
+            <div key={f.filename} className="filetree-item">
               <span><i className={fileIcon(f.type) + ' icon-inline'} />{f.filename}</span>
               {codeFiles.length > 1 && (
-                <i className="fa-solid fa-xmark" onClick={(e) => { e.stopPropagation(); removeFile(f.filename); }} />
+                <i className="fa-solid fa-xmark" onClick={() => removeFile(f.filename)} />
               )}
             </div>
           ))}
@@ -291,16 +261,21 @@ export default function Editor() {
           </div>
         </div>
 
-        <div className="editor-pane">
-          <div className="section-title">{active?.filename || 'Dosya seçilmedi'}</div>
-          {active && (
-            <CodeEditorPane type={active.type} value={active.content} onChange={updateActiveContent} />
+        <div>
+          {isEdit ? (
+            <div className="workspace-cta bevel-sunken">
+              <div className="glyph"><i className="fa-solid fa-laptop-code" /></div>
+              <p>Kodunu yazmak, düzenlemek ve canlı önizlemesini görmek için geniş ekranlı kod editörünü aç.</p>
+              <Button98 variant="primary" onClick={() => navigate(`/projects/${id}/edit/workspace`)}>
+                <i className="fa-solid fa-laptop-code icon-inline" />Kod Editörünü Aç
+              </Button98>
+            </div>
+          ) : (
+            <div className="workspace-cta bevel-sunken">
+              <div className="glyph"><i className="fa-solid fa-circle-info" /></div>
+              <p>Kod editörünü açabilmek için önce projeyi bir kere kaydetmen gerekiyor. Başlığı gir ve "Kaydet" butonuna tıkla — ardından buradan kod editörüne geçebileceksin.</p>
+            </div>
           )}
-        </div>
-
-        <div className="preview-pane">
-          <div className="section-title">CANLI ÖNİZLEME</div>
-          <PreviewFrame files={previewFiles} refreshKey={previewKey} />
         </div>
       </div>
     </Window>

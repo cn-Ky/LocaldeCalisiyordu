@@ -18,7 +18,7 @@ function useClock() {
   return time.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 }
 
-export default function Shell({ children }) {
+export default function Shell({ children, wide }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export default function Shell({ children }) {
 
   return (
     <div className="desktop" onClick={() => menuOpen && setMenuOpen(false)}>
-      <div className="desktop-content">{children}</div>
+      <div className={'desktop-content' + (wide ? ' wide' : '')}>{children}</div>
 
       {menuOpen && (
         <div className="start-menu bevel-raised" onClick={(e) => e.stopPropagation()}>

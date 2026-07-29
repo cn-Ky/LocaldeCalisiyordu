@@ -7,6 +7,7 @@ import Register from './pages/Register.jsx';
 import Explore from './pages/Explore.jsx';
 import MyProjects from './pages/MyProjects.jsx';
 import Editor from './pages/Editor.jsx';
+import EditorWorkspace from './pages/EditorWorkspace.jsx';
 import ProjectView from './pages/ProjectView.jsx';
 import PullRequestList from './pages/PullRequestList.jsx';
 import PullRequestNew from './pages/PullRequestNew.jsx';
@@ -14,10 +15,10 @@ import PullRequestDetail from './pages/PullRequestDetail.jsx';
 import Profile from './pages/Profile.jsx';
 import Messages from './pages/Messages.jsx';
 
-function Authed({ children }) {
+function Authed({ children, wide }) {
   return (
     <ProtectedRoute>
-      <Shell>{children}</Shell>
+      <Shell wide={wide}>{children}</Shell>
     </ProtectedRoute>
   );
 }
@@ -40,6 +41,7 @@ export default function App() {
       <Route path="/my-projects" element={<Authed><MyProjects /></Authed>} />
       <Route path="/projects/new" element={<Authed><Editor /></Authed>} />
       <Route path="/projects/:id/edit" element={<Authed><Editor /></Authed>} />
+      <Route path="/projects/:id/edit/workspace" element={<Authed wide><EditorWorkspace /></Authed>} />
       <Route path="/projects/:id" element={<Authed><ProjectView /></Authed>} />
       <Route path="/projects/:id/pulls" element={<Authed><PullRequestList /></Authed>} />
       <Route path="/projects/:id/pulls/new" element={<Authed><PullRequestNew /></Authed>} />
