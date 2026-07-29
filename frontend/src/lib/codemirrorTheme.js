@@ -9,8 +9,8 @@ export const win98CmTheme = createTheme({
     background: '#0d0e18',
     foreground: '#e8e8f0',
     caret: '#00e6ff',
-    selection: 'rgba(0, 230, 255, 0.25)',
-    selectionMatch: 'rgba(0, 230, 255, 0.15)',
+    selection: 'rgba(0, 230, 255, 0.38)',
+    selectionMatch: 'rgba(0, 230, 255, 0.22)',
     lineHighlight: 'rgba(255, 255, 255, 0.045)',
     gutterBackground: '#121320',
     gutterForeground: '#5c5e78',
@@ -50,4 +50,12 @@ export const win98CmExtras = EditorView.theme({
   '.cm-activeLineGutter': { backgroundColor: 'rgba(0,230,255,0.08)' },
   '.cm-matchingBracket': { backgroundColor: 'rgba(255,46,136,0.28)', outline: '1px solid #ff2e88' },
   '.cm-selectionMatch': { backgroundColor: 'rgba(0,230,255,0.15)' },
+  // Metin seçimi hem odaklıyken hem odak kaybolduğunda net görünsün diye
+  // açıkça, yüksek önceliğe sahip kurallarla belirtiliyor (Ctrl+A dahil).
+  '.cm-selectionBackground, &.cm-focused .cm-selectionBackground, .cm-content ::selection': {
+    backgroundColor: 'rgba(0, 230, 255, 0.38) !important',
+  },
+  '&:not(.cm-focused) .cm-selectionBackground': {
+    backgroundColor: 'rgba(0, 230, 255, 0.28) !important',
+  },
 });
