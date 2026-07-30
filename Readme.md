@@ -4,50 +4,6 @@ Localde Çalışıyordu, kullanıcıların HTML, CSS ve JavaScript kodlarını y
 
 ## https://localde-calisiyordu.vercel.app
 
-## Görseller
-
-<div align="center">
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_1.png" alt="Ana ekran" width="48%" />
-  </a>
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_2.png" alt="Proje görünümü" width="48%" />
-  </a>
-  <br />
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_3.png" alt="Kod düzenleme" width="48%" />
-  </a>
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_4.png" alt="Pull request" width="48%" />
-  </a>
-  <br />
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_5.png" alt="Profil sayfası" width="48%" />
-  </a>
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_6.png" alt="Mesajlaşma" width="48%" />
-  </a>
-  <br />
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_7.png" alt="Arayüz" width="48%" />
-  </a>
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_8.png" alt="Proje listesi" width="48%" />
-  </a>
-  <br />
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_9.png" alt="Detay ekranı" width="48%" />
-  </a>
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_10.png" alt="Kullanıcı deneyimi" width="48%" />
-  </a>
-  <br />
-  <a href="https://github.com/CanKayabas">
-    <img src="https://github.com/cn-Ky/LocaldeCalisiyordu/blob/main/Screenshot_11.png" alt="Daha fazla ekran" width="100%" />
-  </a>
-</div>
-
-
 ## Proje Hakkında
 
 Bu proje, geliştiricilerin:
