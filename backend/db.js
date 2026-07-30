@@ -1,9 +1,17 @@
 import { DatabaseSync } from 'node:sqlite';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const db = new DatabaseSync(path.join(__dirname, 'data.sqlite'));
+
+// Masaüstü (Electron) sürümünde veritabanı, uygulama paketinin salt-okunur
+// kurulum klasörü yerine kullanıcının işletim sistemi tarafından ayrılan
+// kalıcı veri klasöründe tutulur (bkz. electron/main.cjs). Web/Render
+// dağıtımında bu değişken tanımlı olmadığı için davranış değişmez.
+const dbPath = process.env.LC_DB_PATH || path.join(__dirname, 'data.sqlite');
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+const db = new DatabaseSync(dbPath);
 
 db.exec('PRAGMA journal_mode = WAL');
 db.exec('PRAGMA foreign_keys = ON');

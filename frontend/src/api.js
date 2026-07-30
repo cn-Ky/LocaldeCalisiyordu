@@ -4,7 +4,19 @@ import axios from 'axios';
 // Production'da (Vercel gibi statik barındırma) backend ayrı bir adreste
 // çalıştığı için VITE_API_URL ortam değişkeniyle tam adres verilmelidir.
 // Örn: VITE_API_URL=https://senin-backend-adresin.onrender.com/api
-const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || '/api' });
+//
+// Masaüstü (Electron, paketlenmiş) sürümde arayüz file:// üzerinden
+// yüklenir ve gömülü backend rastgele boş bir porta bağlanır; bu port
+// electron/main.cjs tarafından sayfaya ?port=NNNN olarak iletilir.
+function resolveBaseUrl() {
+  if (typeof window !== 'undefined') {
+    const electronPort = new URLSearchParams(window.location.search).get('port');
+    if (electronPort) return `http://127.0.0.1:${electronPort}/api`;
+  }
+  return import.meta.env.VITE_API_URL || '/api';
+}
+
+const api = axios.create({ baseURL: resolveBaseUrl() });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('lc_token');

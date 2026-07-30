@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import api from '../api.js';
+import { notify, setBadge } from '../lib/electron.js';
 
 const APPS = [
   { path: '/explore', label: 'Keşfet', icon: 'fa-solid fa-earth-americas' },
@@ -20,15 +22,39 @@ function useClock() {
 
 export default function Shell({ children, wide }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [unread, setUnread] = useState(0);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const clock = useClock();
+  const prevUnreadRef = useRef(null);
 
   function go(path) {
     setMenuOpen(false);
     navigate(path);
   }
+
+  // Kullanıcı hangi sayfada olursa olsun okunmamış mesajları hafifçe
+  // yoklar; görev çubuğunda rozet gösterir, masaüstünde ise yeni mesaj
+  // geldiğinde native bildirim + uygulama rozetini (badge) tetikler.
+  useEffect(() => {
+    let cancelled = false;
+    function poll() {
+      api.get('/messages/conversations').then((res) => {
+        if (cancelled) return;
+        const total = (res.data.conversations || []).reduce((sum, c) => sum + (c.unread || 0), 0);
+        if (prevUnreadRef.current !== null && total > prevUnreadRef.current) {
+          notify('Localde Çalışıyordu', 'Yeni bir mesajınız var.');
+        }
+        prevUnreadRef.current = total;
+        setUnread(total);
+        setBadge(total);
+      }).catch(() => {});
+    }
+    poll();
+    const t = setInterval(poll, 20000);
+    return () => { cancelled = true; clearInterval(t); };
+  }, []);
 
   return (
     <div className="desktop" onClick={() => menuOpen && setMenuOpen(false)}>
@@ -67,6 +93,9 @@ export default function Shell({ children, wide }) {
               onClick={() => go(a.path)}
             >
               <i className={a.icon + ' icon-inline'} /><span className="taskbar-label">{a.label}</span>
+              {a.path === '/messages' && unread > 0 && (
+                <span className="taskbar-badge">{unread > 99 ? '99+' : unread}</span>
+              )}
             </div>
           ))}
           <div

@@ -142,6 +142,9 @@ a { color: var(--accent); }
 }
 .win98-tbtn:active { border-color: transparent; }
 
+/* Başlık çubuğundaki "büyüt" düğmesi artık gerçekten pencereyi büyütür. */
+.win98-window.maximized { width: 100% !important; max-width: 100% !important; }
+
 .win98-menubar {
   display: flex;
   gap: 2px;
@@ -350,6 +353,7 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
 }
 .taskbar-apps { display: flex; gap: 4px; flex: 1; overflow-x: auto; }
 .taskbar-app {
+  position: relative;
   padding: 5px 12px;
   font-size: 12px;
   color: var(--text);
@@ -362,6 +366,22 @@ textarea.input98 { resize: vertical; font-family: var(--font-mono); }
   white-space: nowrap;
 }
 .taskbar-app.active { background: var(--win-bg-alt); box-shadow: inset 0 0 0 1px var(--accent); color: var(--accent); }
+.taskbar-badge {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  box-shadow: 0 0 0 1px var(--win-bg);
+}
 .taskbar-clock {
   padding: 6px 12px;
   font-size: 11px;

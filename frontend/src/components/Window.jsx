@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { isElectron, minimizeWindow, toggleMaximizeWindow, closeWindow, onMaximizedChange } from '../lib/electron.js';
 
 export default function Window({ icon, title, menu, statusLeft, statusRight, children, width }) {
   const [openMenu, setOpenMenu] = useState(null);
+  const [maximized, setMaximized] = useState(false);
   const ref = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function onDocClick(e) {
@@ -12,17 +16,41 @@ export default function Window({ icon, title, menu, statusLeft, statusRight, chi
     return () => document.removeEventListener('mousedown', onDocClick);
   }, []);
 
+  // Electron'da gerçek pencere büyütme/küçültme durumunu simge ile senkron tut.
+  useEffect(() => {
+    if (!isElectron) return undefined;
+    return onMaximizedChange(setMaximized);
+  }, []);
+
+  function handleMinimize() {
+    if (isElectron) return minimizeWindow();
+    navigate(-1);
+  }
+  function handleMaximize() {
+    if (isElectron) return toggleMaximizeWindow();
+    setMaximized((m) => !m);
+  }
+  function handleClose() {
+    if (isElectron) return closeWindow();
+    navigate('/explore');
+  }
+
   return (
-    <div className="win98-window bevel-raised" style={width ? { width, maxWidth: '94vw' } : undefined}>
+    <div
+      className={'win98-window bevel-raised' + (maximized ? ' maximized' : '')}
+      style={!maximized && width ? { width, maxWidth: '94vw' } : undefined}
+    >
       <div className="win98-titlebar">
         <div className="win98-titlebar-text">
           {icon && <span className="win98-titlebar-icon">{icon}</span>}
           <span>{title}</span>
         </div>
         <div className="win98-titlebar-controls">
-          <div className="win98-tbtn bevel-raised"><i className="fa-solid fa-window-minimize" /></div>
-          <div className="win98-tbtn bevel-raised"><i className="fa-regular fa-square" /></div>
-          <div className="win98-tbtn bevel-raised"><i className="fa-solid fa-xmark" /></div>
+          <div className="win98-tbtn bevel-raised" title="Küçült" onClick={handleMinimize}><i className="fa-solid fa-window-minimize" /></div>
+          <div className="win98-tbtn bevel-raised" title={maximized ? 'Eski Boyuta Getir' : 'Büyüt'} onClick={handleMaximize}>
+            <i className={maximized ? 'fa-regular fa-window-restore' : 'fa-regular fa-square'} />
+          </div>
+          <div className="win98-tbtn bevel-raised" title="Kapat" onClick={handleClose}><i className="fa-solid fa-xmark" /></div>
         </div>
       </div>
       {menu && menu.length > 0 && (
