@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Localde Çalışıyordu
+Comment=Yerel kod paylaşımı ve proje editörü
+Exec=localde-desktop
+Icon=localde-calisiyordu
+Terminal=false
+Categories=Development;IDE;
+StartupWMClass=localde-desktop

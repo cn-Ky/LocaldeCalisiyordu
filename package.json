@@ -2,64 +2,11 @@
   "name": "localde-calisiyordu",
   "private": true,
   "version": "1.0.0",
-  "description": "Localde Çalışıyordu — kod editörü, proje paylaşımı ve mesajlaşma platformu (masaüstü sürümü).",
-  "main": "electron/main.cjs",
   "scripts": {
     "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
-    "dev": "concurrently -n BACKEND,FRONTEND -c blue,magenta \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
-    "electron:dev": "concurrently -n BACKEND,FRONTEND,ELECTRON -c blue,magenta,green -k -s first \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\" \"wait-on tcp:4000 http://localhost:5173 && electron .\"",
-    "build:frontend:electron": "npm run build:electron --prefix frontend",
-    "pack": "npm run build:frontend:electron && electron-builder --dir",
-    "dist": "npm run build:frontend:electron && electron-builder"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "multer": "^2.0.0",
-    "uuid": "^9.0.1"
+    "dev": "concurrently -n BACKEND,FRONTEND -c blue,magenta \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
   },
   "devDependencies": {
-    "concurrently": "^9.0.1",
-    "electron": "^38.2.0",
-    "electron-builder": "^25.1.8",
-    "wait-on": "^8.0.1"
-  },
-  "build": {
-    "appId": "com.localdecalisiyordu.desktop",
-    "productName": "Localde Calisiyordu",
-    "asar": false,
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "electron/**/*",
-      "frontend/dist/**/*",
-      "backend/**/*",
-      "package.json",
-      "!backend/data.sqlite*",
-      "!backend/node_modules/.cache/**/*",
-      "!backend/uploads/**/*",
-      "!**/*.map"
-    ],
-    "extraMetadata": {
-      "main": "electron/main.cjs"
-    },
-    "mac": {
-      "target": "dmg",
-      "category": "public.app-category.developer-tools"
-    },
-    "win": {
-      "target": "nsis"
-    },
-    "linux": {
-      "target": "AppImage",
-      "category": "Development"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    }
+    "concurrently": "^9.0.1"
   }
 }

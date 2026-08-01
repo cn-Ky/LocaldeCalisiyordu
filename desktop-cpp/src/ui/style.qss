@@ -1,0 +1,92 @@
+/* Localde Çalışıyordu — masaüstü (Qt) tema
+   Renk paleti frontend/src/styles/win98.css içindeki tasarım
+   tokenlarıyla eşleştirilmiştir. Qt QSS, orijinal win98 bevel
+   efektini (skeuomorphic 3D kenarlar) tam olarak yeniden üretemez;
+   burada aynı renk kimliğini koruyan düz (flat) bir yorum sunulur.
+   Pikselinde win98 kenarlar istenirse ileride özel QStyle/QPainter
+   ile eklenebilir. */
+
+QWidget {
+    background: #1b1d2b;
+    color: #e8e8f0;
+    font-family: Tahoma, "Segoe UI", sans-serif;
+    font-size: 13px;
+}
+
+QMainWindow, QDialog {
+    background: #05060b;
+}
+
+#appTitle {
+    color: #00e6ff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px;
+}
+
+#errorLabel {
+    color: #ff5c5c;
+}
+
+QLineEdit, QTextEdit {
+    background: #0d0e18;
+    border: 1px solid #454863;
+    padding: 4px;
+    color: #e8e8f0;
+    selection-background-color: #00e6ff;
+    selection-color: #05060b;
+}
+
+QLineEdit:focus, QTextEdit:focus {
+    border: 1px solid #00e6ff;
+}
+
+QPushButton {
+    background: #1b1d2b;
+    border: 1px solid #6a6f96;
+    border-bottom-color: #030308;
+    border-right-color: #030308;
+    padding: 5px 14px;
+    color: #e8e8f0;
+}
+QPushButton:hover {
+    border-color: #00e6ff;
+    color: #00e6ff;
+}
+QPushButton:pressed {
+    background: #121320;
+}
+
+QTableWidget {
+    background: #121320;
+    gridline-color: #454863;
+    border: 1px solid #454863;
+}
+QHeaderView::section {
+    background: #1b1d2b;
+    color: #9799b3;
+    border: 1px solid #454863;
+    padding: 4px;
+}
+QTableWidget::item:selected {
+    background: #0891a8;
+    color: #05060b;
+}
+
+QTabWidget::pane {
+    border: 1px solid #454863;
+}
+QTabBar::tab {
+    background: #121320;
+    color: #9799b3;
+    padding: 6px 14px;
+    border: 1px solid #454863;
+}
+QTabBar::tab:selected {
+    background: #1b1d2b;
+    color: #00e6ff;
+}
+
+QRadioButton {
+    color: #e8e8f0;
+}
