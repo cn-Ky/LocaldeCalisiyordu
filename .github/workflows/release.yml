@@ -8,10 +8,6 @@ on:
     branches: [main]
   workflow_dispatch: {}
 
-defaults:
-  run:
-    working-directory: desktop-cpp
-
 jobs:
   # ---------------------------------------------------------------------
   # LINUX — .deb paketi + taşınabilir AppImage
@@ -21,6 +17,9 @@ jobs:
   # ---------------------------------------------------------------------
   build-linux:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: desktop-cpp
     steps:
       - uses: actions/checkout@v4
 
@@ -111,9 +110,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release `
-            -DCMAKE_TOOLCHAIN_FILE=$PWD\..\..\vcpkg\scripts\buildsystems\vcpkg.cmake `
-            -DVCPKG_TARGET_TRIPLET=x64-windows
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\desktop-cpp\vcpkg\scripts\buildsystems\vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
           ninja
 
       - name: Qt DLL'lerini ve libsodium'u topla (windeployqt)
@@ -138,6 +135,9 @@ jobs:
   # ---------------------------------------------------------------------
   build-macos:
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: desktop-cpp
     steps:
       - uses: actions/checkout@v4
 
@@ -151,14 +151,13 @@ jobs:
 
       - name: Derle
         run: |
-          cd desktop-cpp
           mkdir -p build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release
           make -j"$(sysctl -n hw.ncpu)"
 
       - name: .dmg oluştur (macdeployqt)
         run: |
-          cd desktop-cpp/build
+          cd build
           macdeployqt localde-desktop.app -dmg
 
       - uses: actions/upload-artifact@v4
