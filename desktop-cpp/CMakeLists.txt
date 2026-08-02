@@ -20,7 +20,7 @@ if(WIN32)
     set(SODIUM_TARGET unofficial-sodium::sodium)
 else()
     find_package(PkgConfig REQUIRED)
-    pkg_check_modules(SODIUM REQUIRED libsodium)
+    pkg_check_modules(SODIUM REQUIRED IMPORTED_TARGET libsodium)
 endif()
 
 set(APP_SOURCES
@@ -59,9 +59,7 @@ if(WIN32)
     # Konsol penceresi açılmasın.
     set_target_properties(localde-desktop PROPERTIES WIN32_EXECUTABLE TRUE)
 else()
-    target_include_directories(localde-desktop PRIVATE ${SODIUM_INCLUDE_DIRS})
-    target_link_libraries(localde-desktop PRIVATE ${SODIUM_LIBRARIES})
-    target_compile_options(localde-desktop PRIVATE ${SODIUM_CFLAGS_OTHER})
+    target_link_libraries(localde-desktop PRIVATE PkgConfig::SODIUM)
 endif()
 
 if(APPLE)
@@ -84,9 +82,7 @@ target_link_libraries(core_tests PRIVATE Qt6::Core Qt6::Sql)
 if(WIN32)
     target_link_libraries(core_tests PRIVATE ${SODIUM_TARGET})
 else()
-    target_include_directories(core_tests PRIVATE ${SODIUM_INCLUDE_DIRS})
-    target_link_libraries(core_tests PRIVATE ${SODIUM_LIBRARIES})
-    target_compile_options(core_tests PRIVATE ${SODIUM_CFLAGS_OTHER})
+    target_link_libraries(core_tests PRIVATE PkgConfig::SODIUM)
 endif()
 
 # ---------------------------------------------------------------------------
