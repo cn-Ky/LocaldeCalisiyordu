@@ -1,5 +1,0 @@
-build/
-*.o
-AppDir/
-*.deb
-*.AppImage
