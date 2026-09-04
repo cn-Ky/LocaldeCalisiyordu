@@ -9,3 +9,13 @@ services:
     envVars:
       - key: JWT_SECRET
         generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: localde-calisiyordu-db
+          property: connectionString
+
+databases:
+  - name: localde-calisiyordu-db
+    plan: basic-256mb
+    databaseName: localde_calisiyordu
+    user: localde_calisiyordu

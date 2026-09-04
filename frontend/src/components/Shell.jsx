@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import api from '../api.js';
-import { notify, setBadge } from '../lib/electron.js';
 
 const APPS = [
   { path: '/explore', label: 'Keşfet', icon: 'fa-solid fa-earth-americas' },
@@ -34,21 +33,15 @@ export default function Shell({ children, wide }) {
     navigate(path);
   }
 
-  // Kullanıcı hangi sayfada olursa olsun okunmamış mesajları hafifçe
-  // yoklar; görev çubuğunda rozet gösterir, masaüstünde ise yeni mesaj
-  // geldiğinde native bildirim + uygulama rozetini (badge) tetikler.
+  // Kullanıcı hangi sayfada olursa olsun okunmamış mesajları hafifçe yoklar.
   useEffect(() => {
     let cancelled = false;
     function poll() {
       api.get('/messages/conversations').then((res) => {
         if (cancelled) return;
         const total = (res.data.conversations || []).reduce((sum, c) => sum + (c.unread || 0), 0);
-        if (prevUnreadRef.current !== null && total > prevUnreadRef.current) {
-          notify('Localde Çalışıyordu', 'Yeni bir mesajınız var.');
-        }
         prevUnreadRef.current = total;
         setUnread(total);
-        setBadge(total);
       }).catch(() => {});
     }
     poll();

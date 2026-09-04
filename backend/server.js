@@ -8,9 +8,6 @@ import messageRoutes from './routes/messages.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-// Masaüstü (Electron) sürümünde backend yalnızca yerel makineye (127.0.0.1)
-// açılır; web dağıtımında (Render vb.) tüm arayüzlere açık kalması için
-// varsayılan '0.0.0.0' korunur.
 const HOST = process.env.HOST || '0.0.0.0';
 
 app.use(cors());

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { isElectron, minimizeWindow, toggleMaximizeWindow, closeWindow, onMaximizedChange } from '../lib/electron.js';
 
 export default function Window({ icon, title, menu, statusLeft, statusRight, children, width }) {
   const [openMenu, setOpenMenu] = useState(null);
@@ -16,22 +15,13 @@ export default function Window({ icon, title, menu, statusLeft, statusRight, chi
     return () => document.removeEventListener('mousedown', onDocClick);
   }, []);
 
-  // Electron'da gerçek pencere büyütme/küçültme durumunu simge ile senkron tut.
-  useEffect(() => {
-    if (!isElectron) return undefined;
-    return onMaximizedChange(setMaximized);
-  }, []);
-
   function handleMinimize() {
-    if (isElectron) return minimizeWindow();
     navigate(-1);
   }
   function handleMaximize() {
-    if (isElectron) return toggleMaximizeWindow();
     setMaximized((m) => !m);
   }
   function handleClose() {
-    if (isElectron) return closeWindow();
     navigate('/explore');
   }
 

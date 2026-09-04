@@ -31,7 +31,7 @@ bir ortam oluşturmayı hedefler.
 - JWT (kimlik doğrulama)
 - bcryptjs (şifre güvenliği)
 - multer (dosya yükleme)
-- SQLite
+- PostgreSQL
 - CORS
 
 ### Araçlar
@@ -55,6 +55,17 @@ Projeyi çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 npm run install:all
 npm run dev
 ```
+
+### Kalıcı veritabanı
+
+Backend artık geçici SQLite dosyası kullanmaz; PostgreSQL bağlantısı olmadan başlamaz. Yerel geliştirmede `backend/.env` içine bir PostgreSQL bağlantısı ekleyin:
+
+```env
+DATABASE_URL=postgresql://kullanici:sifre@localhost:5432/localde_calisiyordu
+JWT_SECRET=yerel-gelistirme-gizli-anahtari
+```
+
+Render kullanıyorsanız `render.yaml`, web servisine kalıcı PostgreSQL veritabanının `DATABASE_URL` bağlantısını otomatik olarak bağlar. Uygulama ilk açılışta tabloları ve indeksleri oluşturur.
 
 ## Amaç
 
